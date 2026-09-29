@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#092633">
+  <meta name="description" content="Um poste de direcções vivo para os lugares que queres conhecer.">
+  <title>Poste de Viagens</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23092633'/%3E%3Cpath d='M29 8h6v48h-6z' fill='%23d69c58'/%3E%3Cpath d='M8 16h35l12 9-12 9H8z' fill='%23f4dfb5' stroke='%23d33f49' stroke-width='3'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#092633;--paper:#f4dfb5;--wood:#8e562d;--wood-hi:#d79c59;--cream:#fff8e8;--sky1:#86d2df;--sky2:#e8f0dc;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Georgia,'Times New Roman',serif;color:var(--ink);background:#082532}
+    button,input{font:inherit}
+    .app{position:relative;width:100%;height:100dvh;min-height:520px;overflow:hidden;background:linear-gradient(180deg,var(--sky1) 0%,#b5dee0 38%,var(--sky2) 70%,#a8bd87 100%);isolation:isolate}
+    .sun{position:absolute;top:7%;left:8%;width:22vw;max-width:120px;aspect-ratio:1;border-radius:50%;background:#fff3bd;box-shadow:0 0 55px 25px #fff3bd66;filter:blur(.2px);opacity:.82}
+    .cloud{position:absolute;width:48vw;height:12vh;border-radius:50%;background:#fff8;filter:blur(18px);opacity:.45}.cloud.c1{top:13%;right:-14%}.cloud.c2{top:40%;left:-22%;width:60vw}
+    .ground{position:absolute;inset:auto -10% 0;height:28%;background:linear-gradient(165deg,#657c4d,#304932);clip-path:polygon(0 36%,28% 7%,47% 30%,67% 0,100% 31%,100% 100%,0 100%)}
+    .location-pill{position:absolute;z-index:8;top:calc(var(--safe-top) + 13px);left:50%;transform:translateX(-50%);max-width:80%;padding:7px 13px;border:1px solid #ffffff55;border-radius:999px;background:#06222bbd;color:#fff;font-family:system-ui,sans-serif;font-size:12px;letter-spacing:.02em;white-space:nowrap;backdrop-filter:blur(10px);box-shadow:0 4px 20px #0018}
+    .scene{position:absolute;z-index:3;inset:calc(var(--safe-top) + 52px) 0 calc(var(--safe-bottom) + 18px);display:flex;justify-content:center;align-items:stretch}
+    .post{position:absolute;z-index:0;top:3%;bottom:-4%;left:50%;width:clamp(40px,11vw,62px);transform:translateX(-50%);border-radius:7px 7px 0 0;background:linear-gradient(90deg,#68401f 0%,#b9793e 22%,#d59a59 47%,#9f632f 73%,#553218 100%);box-shadow:inset 5px 0 8px #fff2,inset -7px 0 9px #2b130755,5px 7px 16px #17301d66}
+    .post:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(87deg,transparent 0 25px,#3a1f0b1a 27px 29px);mix-blend-mode:multiply}
+    .signs{position:relative;z-index:2;width:min(94vw,520px);height:100%;display:grid;grid-template-rows:clamp(58px,10vh,82px) 1fr;gap:clamp(8px,1.4vh,14px)}
+    .top-sign{justify-self:center;width:clamp(130px,39vw,210px);height:100%;border:4px solid #164d58;border-radius:5px;background:linear-gradient(100deg,#f8e8be,#d9b779);box-shadow:0 6px 12px #16352155,inset 0 0 15px #7b512333;display:flex;align-items:center;justify-content:center;gap:15px;cursor:pointer;transform:rotate(-1deg)}
+    .top-sign span{font-family:system-ui,sans-serif;font-size:clamp(26px,7vw,39px);filter:drop-shadow(0 2px 1px #fff8)}
+    .destinations{min-height:0;display:grid;align-content:space-evenly;grid-auto-rows:minmax(54px,1fr);gap:clamp(6px,1vh,10px)}
+    .sign{position:relative;width:87%;max-height:84px;min-height:54px;border:4px solid var(--accent);background:linear-gradient(98deg,#fae9bd 0%,#e3c07d 52%,#c89b58 100%);color:var(--accent-dark);filter:drop-shadow(0 7px 5px #18351d66);display:flex;align-items:center;justify-content:center;padding:5px 44px 5px 23px;cursor:pointer;user-select:none;touch-action:manipulation}
+    .sign.right{justify-self:start;margin-left:2%;clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%,5% 50%)}
+    .sign.left{justify-self:end;margin-right:2%;padding:5px 23px 5px 44px;clip-path:polygon(18% 0,100% 0,95% 50%,100% 100%,18% 100%,0 50%)}
+    .sign:active{transform:scale(.985)}
+    .sign-content{text-align:center;line-height:1.02;text-shadow:0 1px #fff7;overflow:hidden}
+    .sign-name{display:block;font-weight:800;font-size:clamp(16px,5.1vw,27px);letter-spacing:.025em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sign-meta{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:4px;font-family:system-ui,sans-serif;font-size:clamp(12px,3.6vw,17px);font-weight:700}
+    .bearing{display:inline-grid;place-items:center;width:21px;height:21px;border:1.5px solid currentColor;border-radius:50%;font-size:14px;line-height:1;background:#fff5}
+    .bearing i{display:block;font-style:normal;transform:rotate(var(--angle,0deg));transition:transform .25s ease}
+    .add{position:absolute;z-index:6;right:16px;bottom:calc(var(--safe-bottom) + 15px);width:50px;height:50px;border:1px solid #fff8;border-radius:50%;background:#072b37e8;color:#fff;font-family:system-ui,sans-serif;font-size:31px;line-height:1;box-shadow:0 7px 20px #0018;cursor:pointer}
+    .add[hidden]{display:none}
+    .modal{position:fixed;z-index:20;inset:0;display:grid;align-items:end;background:#00182099;backdrop-filter:blur(5px)}
+    .modal[hidden]{display:none}
+    .sheet{width:min(100%,560px);max-height:88dvh;margin:auto;background:#fffaf0;border-radius:24px 24px 0 0;padding:18px 20px calc(20px + var(--safe-bottom));box-shadow:0 -12px 50px #0019;overflow:auto;font-family:system-ui,sans-serif}
+    .handle{width:44px;height:5px;border-radius:4px;background:#9aa7a7;margin:0 auto 14px}
+    .sheet h2{margin:0 0 6px;font-family:Georgia,serif;font-size:25px}.sheet p{margin:0 0 16px;color:#506066;font-size:14px}
+    .close{position:absolute;right:20px;border:0;background:transparent;font-size:28px;color:#52666a;cursor:pointer}
+    .field-row{display:flex;gap:8px}.field-row input{min-width:0;flex:1;border:2px solid #9ab0ad;border-radius:12px;padding:13px 14px;font-size:16px;background:#fff}.primary,.secondary,.danger{border:0;border-radius:12px;padding:12px 15px;font-weight:750;cursor:pointer}.primary{background:#0c5260;color:#fff}.secondary{background:#dbe7e4;color:#153c44}.danger{background:#f8dedc;color:#9b2f2b}
+    .results{display:grid;gap:7px;margin-top:13px}.result{width:100%;border:1px solid #ccd8d4;border-radius:12px;background:#fff;padding:11px;text-align:left;cursor:pointer}.result strong{display:block;color:#123e47}.result small{color:#647278}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.actions .wide{grid-column:1/-1}
+    .status{min-height:20px;margin-top:10px;color:#58696c;font-size:13px}.details{padding:12px 0 4px;font-size:17px}.details strong{display:block;font-family:Georgia,serif;font-size:26px;margin-bottom:5px}.maps{display:block;text-align:center;text-decoration:none;margin-top:14px}
+    .toast{position:fixed;z-index:30;left:50%;bottom:calc(var(--safe-bottom) + 24px);transform:translate(-50%,20px);padding:10px 15px;border-radius:12px;background:#061f27e8;color:white;font:14px system-ui,sans-serif;opacity:0;pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(orientation:landscape){.app:after{content:'Roda o telemóvel para a posição vertical';position:fixed;z-index:50;inset:0;display:grid;place-items:center;padding:30px;text-align:center;background:#092633;color:#fff;font:700 22px system-ui,sans-serif}.scene,.location-pill,.add{visibility:hidden}}
+  </style>
+</head>
+<body>
+<main class="app" aria-label="Poste de viagens">
+  <div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div><div class="ground"></div>
+  <div class="location-pill" id="locationPill">📍 A localizar…</div>
+  <section class="scene">
+    <div class="post" aria-hidden="true"></div>
+    <div class="signs">
+      <button class="top-sign" id="flights" aria-label="Abrir Google Flights"><span>❤️</span><span>✈️</span></button>
+      <div class="destinations" id="destinations"></div>
+    </div>
+  </section>
+  <button class="add" id="add" aria-label="Adicionar destino">+</button>
+</main>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <section class="sheet">
+    <button class="close" id="close" aria-label="Fechar">×</button><div class="handle"></div>
+    <div id="modalBody"></div>
+  </section>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const LISBON={lat:38.7223,lon:-9.1393,label:'Lisboa (localização predefinida)',fallback:true};
+const CINQUE={name:'Cinque Terre',lat:44.1461,lon:9.6439,color:'#be2635'};
+const palette=['#be2635','#126a75','#2d6a3f','#a14b16','#563c87','#9a326a','#305da8','#7d5720'];
+const $=s=>document.querySelector(s), destinationsEl=$('#destinations'), modal=$('#modal'), body=$('#modalBody');
+let origin=LISBON, heading=0, editIndex=null, longTimer=null, longTriggered=false;
+let destinations=load();
+function load(){try{const d=JSON.parse(localStorage.getItem('travel-post-destinations'));if(Array.isArray(d)&&d.length)return d.slice(0,6)}catch{}return[CINQUE]}
+function save(){localStorage.setItem('travel-post-destinations',JSON.stringify(destinations))}
+function rad(n){return n*Math.PI/180}
+function distance(a,b){const R=6371,dLat=rad(b.lat-a.lat),dLon=rad(b.lon-a.lon);const x=Math.sin(dLat/2)**2+Math.cos(rad(a.lat))*Math.cos(rad(b.lat))*Math.sin(dLon/2)**2;return 2*R*Math.asin(Math.sqrt(x))}
+function bearing(a,b){const y=Math.sin(rad(b.lon-a.lon))*Math.cos(rad(b.lat));const x=Math.cos(rad(a.lat))*Math.sin(rad(b.lat))-Math.sin(rad(a.lat))*Math.cos(rad(b.lat))*Math.cos(rad(b.lon-a.lon));return(Math.atan2(y,x)*180/Math.PI+360)%360}
+function relativeBearing(d){return((bearing(origin,d)-heading+540)%360)-180}
+function colourFor(i,d){return d.color||palette[i%palette.length]}
+function darken(hex){const n=parseInt(hex.slice(1),16),f=.72;return'#'+[n>>16,(n>>8)&255,n&255].map(v=>Math.round(v*f).toString(16).padStart(2,'0')).join('')}
+function render(){destinationsEl.innerHTML='';destinations.forEach((d,i)=>{const rel=relativeBearing(d),side=rel<0?'left':'right',km=Math.round(distance(origin,d)).toLocaleString('pt-PT');const c=colourFor(i,d);const el=document.createElement('div');el.className='sign '+side;el.style.setProperty('--accent',c);el.style.setProperty('--accent-dark',darken(c));el.setAttribute('role','button');el.setAttribute('tabindex','0');el.setAttribute('aria-label',`${d.name}, ${km} quilómetros. Tocar para abrir.`);el.innerHTML=`<div class="sign-content"><span class="sign-name">${escapeHtml(d.name)}</span><span class="sign-meta">${km} km <span class="bearing" title="Direcção"><i style="--angle:${rel}deg">↑</i></span></span></div>`;bindSign(el,i);destinationsEl.appendChild(el)});$('#add').hidden=destinations.length>=6}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function bindSign(el,i){const start=()=>{longTriggered=false;longTimer=setTimeout(()=>{longTriggered=true;openEdit(i);navigator.vibrate?.(35)},550)};const cancel=()=>clearTimeout(longTimer);el.addEventListener('pointerdown',start);el.addEventListener('pointerup',()=>{cancel();if(!longTriggered)openDetails(i)});el.addEventListener('pointercancel',cancel);el.addEventListener('pointerleave',cancel);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openDetails(i)})}
+function openModal(html){body.innerHTML=html;modal.hidden=false;setTimeout(()=>body.querySelector('input')?.focus(),100)}
+function closeModal(){modal.hidden=true;body.innerHTML='';editIndex=null}
+function openDetails(i){const d=destinations[i],km=Math.round(distance(origin,d)).toLocaleString('pt-PT');openModal(`<h2 id="modalTitle">${escapeHtml(d.name)}</h2><div class="details">A cerca de <strong>${km} km</strong> em linha recta.</div><a class="primary maps" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${d.lat},${d.lon}">Abrir no Maps</a><button class="secondary wide" style="width:100%;margin-top:8px" data-edit="${i}">Editar destino</button>`);body.querySelector('[data-edit]').onclick=()=>openEdit(i)}
+function editTemplate(title,value=''){return`<h2 id="modalTitle">${title}</h2><p>Escreve uma cidade, região ou lugar.</p><form id="searchForm"><div class="field-row"><input id="query" value="${escapeHtml(value)}" autocomplete="off" placeholder="Ex.: Roma" required><button class="primary">Procurar</button></div></form><div class="status" id="searchStatus"></div><div class="results" id="results"></div>`}
+function openAdd(){editIndex=null;openModal(editTemplate('Adicionar destino'));bindSearch()}
+function openEdit(i){editIndex=i;openModal(editTemplate('Editar destino',destinations[i].name)+`<div class="actions"><button class="secondary" id="up" ${i===0?'disabled':''}>Mover acima</button><button class="secondary" id="down" ${i===destinations.length-1?'disabled':''}>Mover abaixo</button><button class="danger wide" id="remove">Remover destino</button></div>`);bindSearch();$('#up').onclick=()=>move(i,-1);$('#down').onclick=()=>move(i,1);$('#remove').onclick=()=>{if(confirm(`Remover ${destinations[i].name}?`)){destinations.splice(i,1);save();render();closeModal()}}}
+function move(i,delta){const j=i+delta;if(j<0||j>=destinations.length)return;[destinations[i],destinations[j]]=[destinations[j],destinations[i]];save();render();openEdit(j)}
+function bindSearch(){$('#searchForm').onsubmit=async e=>{e.preventDefault();const q=$('#query').value.trim();if(!q)return;const status=$('#searchStatus'),list=$('#results');status.textContent='A procurar…';list.innerHTML='';try{const r=await fetch(`https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=pt&q=${encodeURIComponent(q)}`);if(!r.ok)throw Error();const data=await r.json();status.textContent=data.length?'Escolhe o local certo:':'Não encontrei esse local.';data.forEach(item=>{const b=document.createElement('button');b.className='result';b.innerHTML=`<strong>${escapeHtml(item.name||item.display_name.split(',')[0])}</strong><small>${escapeHtml(item.display_name)}</small>`;b.onclick=()=>selectPlace(item);list.appendChild(b)})}catch{status.textContent='Não foi possível pesquisar agora. Verifica a ligação à Internet.'}}}
+function selectPlace(item){const current=editIndex!==null?destinations[editIndex]:null;const obj={name:item.name||item.display_name.split(',')[0],lat:Number(item.lat),lon:Number(item.lon),color:current?.color||palette[Math.floor(Math.random()*palette.length)]};if(editIndex===null)destinations.push(obj);else destinations[editIndex]=obj;save();render();closeModal();toast('Destino guardado')}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
+function locate(){if(!navigator.geolocation){useFallback();return}navigator.geolocation.getCurrentPosition(p=>{origin={lat:p.coords.latitude,lon:p.coords.longitude,label:'Localização actual',fallback:false};$('#locationPill').textContent='📍 Localização actual';render()},useFallback,{enableHighAccuracy:true,timeout:9000,maximumAge:60000})}
+function useFallback(){origin=LISBON;$('#locationPill').textContent='📍 Lisboa · localização predefinida';render()}
+function handleOrientation(e){let h=e.webkitCompassHeading;if(typeof h!=='number'&&e.alpha!==null)h=(360-e.alpha)%360;if(typeof h==='number'){heading=h;render()}}
+async function enableCompass(){if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){try{if(await DeviceOrientationEvent.requestPermission()==='granted')window.addEventListener('deviceorientation',handleOrientation,true)}catch{}}else window.addEventListener('deviceorientationabsolute',handleOrientation,true)}
+$('#flights').onclick=()=>window.open('https://www.google.com/travel/flights','_blank','noopener');$('#add').onclick=openAdd;$('#close').onclick=closeModal;modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});document.addEventListener('pointerdown',enableCompass,{once:true});
+render();locate();if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js'));
+</script>
+</body>
+</html>
